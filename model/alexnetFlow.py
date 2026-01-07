@@ -185,7 +185,7 @@ class AlexNet_Flow(nn.Module):
         print("---------------------Generate NAFlow--------------")
         flow_list=[]
         for no, map in enumerate(bpmap_list):
-            attn_map=F.relu(torch.sum(map,dim=1, keepdim=False))
+            attn_map=torch.sum(map,dim=1, keepdim=False)
             scaled_map=self.scale_batch_map(attn_map.detach().cpu().numpy(), target_size)
             flow_list.append(scaled_map)
         return  predicted_label,flow_list
