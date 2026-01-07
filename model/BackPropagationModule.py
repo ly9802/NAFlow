@@ -20,11 +20,11 @@ def batch_jacobian(x, y):
     m = y.size(dim=-1)
     jac = torch.zeros(batch_size, m, n, device=x.device)
     for i in range(m):
-        grad_outputs = torch.zeros_like(y)
+        grad_outputs = torch.zeros_like(y,device=x.device)
         grad_outputs[:, i] = 1.0
         grad_i = torch.autograd.grad(outputs=y,inputs=x,allow_unused=True,grad_outputs=grad_outputs,retain_graph=True,create_graph=False)[0]
         if grad_i==None:
-            jac[:, i, :] = torch.zeros(size=(batch_size,n))
+            jac[:, i, :] = torch.zeros(size=(batch_size,n),device=x.device)
         else:
             jac[:,i,:]=grad_i
     if m>n:
