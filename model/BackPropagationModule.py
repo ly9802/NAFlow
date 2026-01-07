@@ -116,7 +116,7 @@ class ReverseComplex(nn.Module):
         jacobian_matrix = batch_jacobian(self.input.contiguous().view(batch_size,-1), self.output.contiguous().view(batch_size, -1)) #(bs, p,p)
         y=one_inverse(jacobian_matrix,x_)
         y=y.contiguous().view(batch_size,self.input.size(dim=1),self.input.size(dim=2),-1)
-        if y.max()==0:
+        if y.abs().max()==0:
             y=y+self.input
         if grad==None:
             return self.input, None
@@ -155,7 +155,7 @@ class ReverseConv(nn.Module):
             out = out[:, :self.num_x]
         y = one_inverse(jacobian_matrix, out)
         y = y.contiguous().view(batchsize, self.input.size(dim=1), self.input.size(dim=2), -1)
-        if y.max()==0:
+        if y.abs().max()==0:
             y=y+self.input
         if grad==None:
             return y, None

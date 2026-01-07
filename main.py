@@ -26,7 +26,7 @@ def model_define(args):
         from model.alexnetFlow import AlexNet_Flow
         net = AlexNet_Flow()
         path = pretrained_weights(args.model_choice)
-        load_pretrained_weights(net.model, path)
+        load_pretrained_weights(net.model, path,args.model_choice)
         net.to(args.device)
         net.eval()
         return net
@@ -36,7 +36,7 @@ def model_define(args):
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--data-set", default="ImageNet2012", type=str, help="Dataset Name")
-    parser.add_argument('--image-path', default='./examples/ILSVRC2012_val_00013393.JPEG', type=str, help='test image path')
+    parser.add_argument('--image-path', default='./examples/ILSVRC2012_val_00048482.JPEG', type=str, help='test image path')
     parser.add_argument("--model-choice", default="AlexNet", choices=["AlexNet"])
     parser.add_argument('--pretrained_weights', default="./pretrainedweights/alexnet-owt-4df8aa71.pth", type=str, help="Path to The Pretrained Weights")
     parser.add_argument('--use-cuda', default=True, action='store_true')

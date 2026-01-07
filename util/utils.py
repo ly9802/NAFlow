@@ -26,6 +26,9 @@ from torchvision.transforms.functional import InterpolationMode
 from torchvision.datasets import ImageFolder
 from torch.optim import lr_scheduler, SGD
 import torch.utils.model_zoo as model_zoo
+model_urls = {
+            'AlexNet': 'https://download.pytorch.org/models/alexnet-owt-4df8aa71.pth',
+        }
 
 def check_path(path):
     if os.path.exists(path):
@@ -79,7 +82,7 @@ def read_image(img_path):
     return img
 
 
-def load_pretrained_weights(model, pretrained_weights, checkpoint_key="state_dict"):
+def load_pretrained_weights(model, pretrained_weights, model_name, checkpoint_key="state_dict"):
     if os.path.isfile(pretrained_weights):
         state_dict = torch.load(pretrained_weights, weights_only=False, map_location="cpu")
 
@@ -94,10 +97,8 @@ def load_pretrained_weights(model, pretrained_weights, checkpoint_key="state_dic
         print('Pretrained weights found at {} and loaded with msg: {}'.format(pretrained_weights, msg))
     else:
         print("The pretrained weights is not found at {}, so it will be downloaded from internet!".format(pretrained_weights))
-        model_urls = {
-            'alexnet': 'https://download.pytorch.org/models/alexnet-owt-4df8aa71.pth',
-        }
-        model.load_state_dict(model_zoo.load_url(model_urls['alexnet']))
+
+        model.load_state_dict(model_zoo.load_url(model_urls[model_name]))
 
 
 

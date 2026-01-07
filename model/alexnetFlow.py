@@ -190,9 +190,6 @@ class AlexNet_Flow(nn.Module):
             flow_list.append(scaled_map)
         return  predicted_label,flow_list
 
-
-
-
 def alexnet_flow(pretrained=False, **kwargs):
     net = AlexNet_Flow(**kwargs)
     if pretrained:
