@@ -1,2 +1,3 @@
-# NAFlow
-This repository include the code for the paper "Neuron Abandoning Attention Flow: Visual Explanation of Dynamics inside CNN Models"
+#Neuron Abandoning Attention Flow
+This repository contains source code necessary to generate the visual attention flow throughout a CNN  for this paper
+[Neuron Abandoning Attention Flow: Visual Explanation of Dynamics inside CNN Models] (TPAMI, 2025).   
