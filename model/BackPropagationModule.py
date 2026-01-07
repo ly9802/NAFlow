@@ -60,7 +60,6 @@ class ReverseBatchNorm(nn.Module):
         self.input=inp;
         self.output=out;
     def forward(self,x,grad=None):
-
         x=torch.sub(x,self.bias)
         x=torch.div(x,self.weight)
         var=torch.add(self.var,self.eps)
@@ -69,7 +68,6 @@ class ReverseBatchNorm(nn.Module):
         if grad==None:
             return y, None
         else:
-
             grad_tuple = torch.autograd.grad(outputs=self.output, inputs=self.input, retain_graph=True, grad_outputs=grad,allow_unused=True,materialize_grads=True)
             selected_index = torch.ne(grad_tuple[0], 0).float().to(self.input.device)
             return torch.mul(y, selected_index),grad_tuple[0]
@@ -107,15 +105,14 @@ class ReverseComplex(nn.Module):
         self.num_x=self.input.size(-1)*self.input.size(-2)*self.input.size(-3);
     def forward(self,x, grad=None):
         batch_size, dim, h,w=self.input.shape
-        zeros_tensor = torch.zeros_like(self.input).to(self.input.device)
-        bias = self.module(zeros_tensor)
+        bias = self.module(torch.zeros_like(self.input).to(self.input.device))
         x_ = torch.sub(x, bias).contiguous().view(batch_size, -1)
         num_y=x_.size(dim=-1)
         if num_y>self.num_x:
             x_ = x_[:, :self.num_x]
         jacobian_matrix = batch_jacobian(self.input.contiguous().view(batch_size,-1), self.output.contiguous().view(batch_size, -1)) #(bs, p,p)
         y=one_inverse(jacobian_matrix,x_)
-        y=y.contiguous().view(batch_size,self.input.size(dim=1),self.input.size(dim=2),-1)
+        y=y.contiguous().view(batch_size,dim,h,-1)
         if y.abs().max()==0:
             y=y+self.input
         if grad==None:
@@ -146,14 +143,14 @@ class ReverseConv(nn.Module):
         self.num_y = self.output.size(-1) * self.output.size(-2) * self.output.size(-3);
         self.num_x = self.input.size(-1) * self.input.size(-2) * self.input.size(-3);
     def forward(self,x,grad=None):
-        batchsize, num_channel,h,w=x.shape
-        x_ = torch.sub(x, self.bias).contiguous().view(batchsize, -1)
+        batch_size, dim,h,w=self.input.shape
+        x_ = torch.sub(x, self.bias).contiguous().view(batch_size, -1)
         num_y = x_.size(dim=-1)
         if num_y > self.num_x:
             x_ = x_[:, :self.num_x]
-        jacobian_matrix=batch_jacobian(self.input.contiguous().view(batchsize,-1), self.output.contiguous().view(batchsize,-1))
+        jacobian_matrix=batch_jacobian(self.input.contiguous().view(batch_size,-1), self.output.contiguous().view(batch_size,-1))
         y = one_inverse(jacobian_matrix, x_)
-        y = y.contiguous().view(batchsize, self.input.size(dim=1), self.input.size(dim=2), -1)
+        y = y.contiguous().view(batch_size,dim, h, -1)
         if y.abs().max()==0:
             y=y+self.input
         if grad==None:
@@ -163,12 +160,7 @@ class ReverseConv(nn.Module):
             selected_index = torch.ne(grad_tuple[0], 0).float().to(y.device)
             return torch.mul(y, selected_index),grad_tuple[0]
 
-
-
-
 if __name__ == '__main__':
-
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
 
     print("well done!")
