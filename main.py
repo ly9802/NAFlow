@@ -58,7 +58,6 @@ if __name__ == "__main__":
     check_path(args.save_dir)
     trans = transform_function(resolution=224, is_train=False)
     net=model_define(args)
-
     image_name = args.image_path.split("/")[-1]
     prefix = image_name.split(".", 1)[0]
     print("Image:", args.image_path)

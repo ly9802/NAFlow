@@ -147,13 +147,12 @@ class ReverseConv(nn.Module):
         self.num_x = self.input.size(-1) * self.input.size(-2) * self.input.size(-3);
     def forward(self,x,grad=None):
         batchsize, num_channel,h,w=x.shape
-        out = torch.sub(self.output, self.bias)
-        jacobian_matrix=batch_jacobian(self.input.contiguous().view(batchsize,-1), out.contiguous().view(batchsize, -1))
-        out=out.contiguous().view(batchsize,-1)
-        num_y = out.size(dim=-1)
+        x_ = torch.sub(x, self.bias).contiguous().view(batchsize, -1)
+        num_y = x_.size(dim=-1)
         if num_y > self.num_x:
-            out = out[:, :self.num_x]
-        y = one_inverse(jacobian_matrix, out)
+            x_ = x_[:, :self.num_x]
+        jacobian_matrix=batch_jacobian(self.input.contiguous().view(batchsize,-1), self.output.contiguous().view(batchsize,-1))
+        y = one_inverse(jacobian_matrix, x_)
         y = y.contiguous().view(batchsize, self.input.size(dim=1), self.input.size(dim=2), -1)
         if y.abs().max()==0:
             y=y+self.input
