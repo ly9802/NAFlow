@@ -38,7 +38,7 @@ conda install -c anaconda pillow scikit-learn pandas seaborn cython dbf
 conda install -c conda-forge h5py timm einops yacs cvxpy nested_dict
 </pre>
 
-4 Please navigate the directory where the main.py exists, and then run the program by the following command,
+4. Please navigate the directory where the main.py exists, and then run the program by the following command,
 <pre>
 python main.py
 </pre>
