@@ -31,10 +31,14 @@ conda activate naflow
 </pre>
 
 3. Please install the pytorch framework and the below libraries by runing the following commands in sequence,
- 
 <pre>
 conda install pytorch==1.8.0 torchvision==0.9.0 torchaudio==0.8.0 cudatoolkit=11.1 -c pytorch -c conda-forge
 python -m pip install opencv-python -i https://pypi.tuna.tsinghua.edu.cn/simple
 conda install -c anaconda pillow scikit-learn pandas seaborn cython dbf
 conda install -c conda-forge h5py timm einops yacs cvxpy nested_dict
+</pre>
+
+4 Please navigate the directory where the main.py exists, and then run the program by the following command,
+<pre>
+python main.py
 </pre>
