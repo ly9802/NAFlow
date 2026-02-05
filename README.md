@@ -13,6 +13,7 @@ This repository contains source code necessary to generate the visual attention 
   number={},
   pages={1-17},
   doi={10.1109/TPAMI.2026.3651260}}
+  publisher={IEEE}
 }
 </pre>
 
