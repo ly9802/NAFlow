@@ -9,9 +9,9 @@ This repository contains source code necessary to generate the visual attention 
   journal={IEEE Transactions on Pattern Analysis and Machine Intelligence}, 
   title={Neuron Abandoning Attention Flow: Visual Explanation of Dynamics Inside CNN Models}, 
   year={2026},
-  volume={},
-  number={},
-  pages={1-17},
+  volume={48},
+  issue={5},
+  pages={5536-5551},
   doi={10.1109/TPAMI.2026.3651260}}
   publisher={IEEE}
 }
